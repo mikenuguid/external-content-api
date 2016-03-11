@@ -3,6 +3,9 @@
 
 class ExternalContentPage extends DataObject {
 	
+	private static $singular_name = 'Page';
+	private static $plural_name = 'Pages';
+	
 	private static $db = array(
 		'Name' => 'Varchar',
 		'URL' => 'Varchar',

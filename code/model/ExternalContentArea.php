@@ -3,6 +3,9 @@
 
 class ExternalContentArea extends DataObject {
 	
+	private static $singular_name = 'Area';
+	private static $plural_name = 'Areas';
+	
 	private static $db = array(
 		'Name' => 'Varchar',
 	);
