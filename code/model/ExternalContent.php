@@ -38,4 +38,12 @@ class ExternalContent extends DataObject {
 		}
 	}
 	
+	
+	
+	
+	public function canView($member = null) {
+		// FIXME: proper permission check
+		return true;
+	}
+	
 }

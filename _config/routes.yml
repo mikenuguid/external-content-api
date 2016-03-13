@@ -1,0 +1,7 @@
+---
+Name: externalcontentroutes
+After: '*'
+---
+Director:
+  rules:
+    'api/v1/externalcontent': 'ExternalContentAPIController'
