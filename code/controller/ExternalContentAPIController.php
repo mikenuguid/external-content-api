@@ -10,10 +10,13 @@ class ExternalContentAPIController extends Controller {
 	public function ExternalContent(SS_HTTPRequest $request){
 		$data = ExternalContent::get();
 		// TODO: filtering
-		
+
 		$format = $request->getVar('format');
-		if($format == 'xml') return $this->toXML($data);
+		
 		if($format == 'json') return $this->toJSON($data);
+
+		//default to XML output
+		return $this->toXML($data);
 	}
 	
 	protected function toXML(SS_List $objects){
