@@ -1,5 +1,5 @@
 <?php 
-class ExternalContentAPIController extends Controller {
+class ExternalContentAPIController extends Controller implements PermissionProvider {
 
 	private static $realm = 'NZTA External content API';
 	
@@ -10,7 +10,9 @@ class ExternalContentAPIController extends Controller {
 	public function init() {
 		parent::init();
 		$realm = $this->config()->get('realm');
-		$this->member = BasicAuth::requireLogin($realm);
+		$member = BasicAuth::requireLogin($realm);
+		if(!Permission::check($member, "VIEW_EXTERNAL_CONTENT_API")) Security::permissionFailure();
+		$this->member = $member;
 	}
 	
 	public function ExternalContent(SS_HTTPRequest $request){
@@ -34,5 +36,10 @@ class ExternalContentAPIController extends Controller {
 		$formatter = new JSONDataFormatter();
 		return $formatter->convertDataObjectSet($objects);
 	}
-	
+
+	public function providePermissions() {
+		return array(
+			'VIEW_EXTERNAL_CONTENT_API' => 'Ability to view and use the external content API'
+		);
+	}	
 }
