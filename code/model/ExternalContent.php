@@ -22,15 +22,30 @@ class ExternalContent extends DataObject {
 	
 	
 	private static $summary_fields = array(
-		'TypeName',
 		'ExternalID',
-		'Content',
+		'ContentSummary',
+		'TypeName',
 	);
 	
 	private static $field_labels = array(
 		'TypeName' => 'Content Type',
+		'ContentSummary' => 'Content',
 	);
 	
+	
+	private static $casting = array(
+		'Content' => 'HTMLText',
+	);
+	
+	
+	
+	public function ContentSummary(){
+		// surely there's a better way of doing this?
+		$content = new HTMLText();
+		$content->setValue($this->Content);
+		/* @var $content HTMLText */
+		return $content->Summary(10);
+	}
 	
 	public function TypeName(){
 		if($this->Type()){
