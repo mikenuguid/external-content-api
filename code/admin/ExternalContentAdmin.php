@@ -15,4 +15,18 @@ class ExternalContentAdmin extends ModelAdmin {
 	
 	private static $menu_title = 'External Content';
 	
+	
+	
+	
+	
+	public function getEditForm($id = null, $fields = null){
+		// add ability to search
+		
+		$form = parent::getEditForm($id, $fields);
+		$gridFieldName = $this->sanitiseClassName($this->modelClass);
+		$gridField = $form->Fields()->fieldByName($gridFieldName);
+		$gridField->getConfig()->addComponent(new GridFieldFilterHeader()); 
+		return $form;
+	}
+	
 }
