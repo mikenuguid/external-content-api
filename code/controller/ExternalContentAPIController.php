@@ -1,5 +1,5 @@
 <?php 
-class ExternalContentAPIController extends Controller implements PermissionProvider {
+class ExternalContentAPIController extends Controller{
 
 	private static $realm = 'NZTA External content API';
 	
@@ -24,10 +24,4 @@ class ExternalContentAPIController extends Controller implements PermissionProvi
 		if(!$formatter) $formatter = new XMLDataFormatter(); // default to XML
 		return $formatter->convertDataObjectSet($data);
 	}
-
-	public function providePermissions() {
-		return array(
-			'VIEW_EXTERNAL_CONTENT_API' => 'Ability to view and use the external content API'
-		);
-	}	
 }

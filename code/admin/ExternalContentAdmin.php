@@ -1,7 +1,7 @@
 <?php 
 
 
-class ExternalContentAdmin extends ModelAdmin {
+class ExternalContentAdmin extends ModelAdmin implements PermissionProvider {
 	
 	private static $managed_models = array(
 		'ExternalContentApplication',
@@ -29,4 +29,9 @@ class ExternalContentAdmin extends ModelAdmin {
 		return $form;
 	}
 	
+	public function providePermissions() {
+		return array(
+			'VIEW_EXTERNAL_CONTENT_API' => 'Ability to view and use the external content API'
+		);
+	}	
 }
