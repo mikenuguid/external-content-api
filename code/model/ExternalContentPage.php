@@ -12,7 +12,7 @@ class ExternalContentPage extends DataObject {
 	);
 	
 	private static $has_one = array(
-			'Area' => 'ExternalContentArea',
+		'Area' => 'ExternalContentArea',
 	);
 	
 	private static $belongs_many_many = array(

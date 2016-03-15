@@ -21,41 +21,23 @@ class ExternalContent extends DataObject {
 	);
 	
 	
+	/**
+	 * Combine summary fields with field labels
+	 * @var array
+	 */
 	private static $summary_fields = array(
-		'ExternalID',
-		'ContentSummary',
-		'TypeName',
-	);
-	
-	private static $field_labels = array(
-		'TypeName' => 'Content Type',
+		'ExternalID' => 'External ID',
 		'ContentSummary' => 'Content',
+		'Type.Name' => 'Content type',
 	);
-	
-	
-	private static $casting = array(
-		'Content' => 'HTMLText',
-	);
-	
-	
-	
+		
+	/**
+	 * Strip HTML from content summary
+	 */
 	public function ContentSummary(){
-		// surely there's a better way of doing this?
-		$content = new HTMLText();
-		$content->setValue($this->Content);
-		/* @var $content HTMLText */
-		return $content->Summary(10);
+		return $this->obj('Content')->Summary(10);
 	}
-	
-	public function TypeName(){
-		if($this->Type()){
-			return $this->Type()->Name;
-		}
-	}
-	
-	
-	
-	
+			
 	public function canView($member = null) {
 		// FIXME: proper permission check
 		return true;
