@@ -51,5 +51,12 @@ class ExternalContent extends DataObject {
 		return Permission::check('CMS_ACCESS_ExternalContentAdmin');
 	}
 
+	public function getCMSFields() {
+		$fields = parent::getCMSFields();
 
+		$contentField = HtmlEditorField::create('Content', 'Content', $this->Content, 'external-content-api');
+		$fields->replaceField('Content', $contentField);
+		
+		return $fields;
+	}
 }
