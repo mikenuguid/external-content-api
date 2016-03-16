@@ -37,10 +37,14 @@ class ExternalContent extends DataObject {
 	public function ContentSummary(){
 		return $this->obj('Content')->Summary(10);
 	}
-			
-	public function canView($member = null) {
-		// FIXME: proper permission check
-		return true;
+
+
+	public function canView($member = null){ return $this->canAccess($member); }
+	public function canEdit($member = null) { return $this->canAccess($member); }
+	public function canDelete($member = null) { return $this->canAccess($member); }
+	public function canCreate($member = null) { return $this->canAccess($member); }
+	protected function canAccess($member = null){
+		return Permission::checkMember($member, 'VIEW_EXTERNAL_CONTENT_API') !== false;
 	}
-	
+
 }

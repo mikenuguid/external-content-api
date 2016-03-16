@@ -63,4 +63,12 @@ class ExternalContentApplication extends DataObject {
 		}
 	}
 	
+	public function canView($member = null){ return $this->canAccess($member); }
+	public function canEdit($member = null) { return $this->canAccess($member); }
+	public function canDelete($member = null) { return $this->canAccess($member); }
+	public function canCreate($member = null) { return $this->canAccess($member); }
+	protected function canAccess($member = null){
+		return Permission::checkMember($member, 'VIEW_EXTERNAL_CONTENT_API') !== false;
+	}
+	
 }
