@@ -17,7 +17,6 @@ class ExternalContentArea extends DataObject {
 	private static $has_many = array(
 		'Pages' => 'ExternalContentPage',
 	);
-
 	public function canView($member = null) {
 		return Permission::check('VIEW_EXTERNAL_CONTENT_API');;
 	}
@@ -30,4 +29,5 @@ class ExternalContentArea extends DataObject {
 	public function canCreate($member = null) {
 		return Permission::check('CMS_ACCESS_ExternalContentAdmin');
 	}
+
 }

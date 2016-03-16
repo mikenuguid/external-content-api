@@ -13,7 +13,6 @@ class ExternalContentType extends DataObject {
 	private static $has_many = array(
 		'Contents' => 'ExternalContent',
 	);
-
 	public function canView($member = null) {
 		return Permission::check('VIEW_EXTERNAL_CONTENT_API');;
 	}
@@ -26,4 +25,5 @@ class ExternalContentType extends DataObject {
 	public function canCreate($member = null) {
 		return Permission::check('CMS_ACCESS_ExternalContentAdmin');
 	}
+
 }

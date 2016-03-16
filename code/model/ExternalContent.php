@@ -51,4 +51,5 @@ class ExternalContent extends DataObject {
 		return Permission::check('CMS_ACCESS_ExternalContentAdmin');
 	}
 
+
 }

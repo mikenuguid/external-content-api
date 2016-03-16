@@ -64,7 +64,7 @@ class ExternalContentApplication extends DataObject {
 		}
 		return $group;
 	}
-	
+
 	public function canView($member = null) {
 		return Permission::check('VIEW_EXTERNAL_CONTENT_API');;
 	}
@@ -77,4 +77,5 @@ class ExternalContentApplication extends DataObject {
 	public function canCreate($member = null) {
 		return Permission::check('CMS_ACCESS_ExternalContentAdmin');
 	}
+
 }
