@@ -35,6 +35,8 @@ class ExternalContentApplication extends DataObject {
 			if($editors && $editors->ID) {
 				Permission::grant($editors->ID, 'VIEW_EXTERNAL_CONTENT_API');
 				Permission::grant($editors->ID, 'CMS_ACCESS_ExternalContentAdmin');
+				$editors->HtmlEditorConfig = 'external-content-api';
+				$editors->write();
 				$readers->Groups()->add($editors);
 			}
 		}
@@ -58,9 +60,9 @@ class ExternalContentApplication extends DataObject {
 					$group->Title,
 					$group->ID
 				));	
-				return $group;
 			}
 		}
+		return $group;
 	}
 	
 	public function canView($member = null) {
