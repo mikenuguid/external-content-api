@@ -18,5 +18,17 @@ class ExternalContentPage extends DataObject {
 	private static $belongs_many_many = array(
 		'Contents' => 'ExternalContent',
 	);
-	
+
+	public function canView($member = null) {
+		return Permission::check('VIEW_EXTERNAL_CONTENT_API');;
+	}
+	public function canEdit($member = null) {
+		return Permission::check('CMS_ACCESS_ExternalContentAdmin');
+	}
+	public function canDelete($member = null) {
+		return Permission::check('CMS_ACCESS_ExternalContentAdmin');
+	}
+	public function canCreate($member = null) {
+		return Permission::check('CMS_ACCESS_ExternalContentAdmin');
+	}
 }
