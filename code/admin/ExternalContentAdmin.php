@@ -16,16 +16,8 @@ class ExternalContentAdmin extends ModelAdmin implements PermissionProvider {
 	private static $menu_title = 'External Content';
 
 	private static $model_importers = array(
-		'ExternalContentApplication' => 'ExternalContentImport',
-		'ExternalContentArea' => 'ExternalContentImport',
-		'ExternalContentPage' => 'ExternalContentImport',
 		'ExternalContent' => 'ExternalContentImport',
-		'ExternalContentType' => 'ExternalContentImport',
 	);
-	
-	
-	
-	
 	
 	public function getEditForm($id = null, $fields = null){
 		// add ability to search
