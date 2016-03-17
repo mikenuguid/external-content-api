@@ -38,11 +38,20 @@ class ExternalContentImport extends CsvBulkLoader {
 		}
 
 		$c = $this->findOrMake('ExternalContent', $contentExternalID, 'ExternalID');
-		if($c && !$c->ID) {
-			$c->Content = $contentContent;
-			$c->write();
-		} 
-		
+
+		if($c) {
+			if($c->ID) {
+				$results->addUpdated($c, 'content record skipped');
+			} else {
+				$c->Content = $this->deWordify($contentContent);
+				$c->write();
+				$results->addCreated($c, 'content record created');
+			}
+
+			$c->Pages()->add($contentPage);
+		}
+
+		return $c;		
 	}
 
 	/**
@@ -72,5 +81,28 @@ class ExternalContentImport extends CsvBulkLoader {
 		return $do;
 	}
 
+	/**
+	 * Convert "smart" Microsoft Word characters to standard ASCI
+	 * @param   $content string that contains Word generated characters
+	 * @return string
+	 */
+	private function deWordify($content) {
+		$search = 
+			array(chr(145), //‘ msword single quote
+			chr(146), //’  msword single quote
+			chr(147), //“  msword double quote
+			chr(148), //”  msword double quote
+			chr(151) // msword emdash
+		); 
+
+		$replace = array("'", 
+			"'", 
+			'"', 
+			'"', 
+			'-'
+		); 
+
+    	return str_replace($search, $replace, $content);
+	}
 
 }
