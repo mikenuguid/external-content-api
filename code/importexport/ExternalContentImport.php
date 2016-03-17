@@ -53,6 +53,21 @@ class ExternalContentImport extends CsvBulkLoader {
 
 		return $c;		
 	}
+	
+	public function getImportSpec(){
+		// CSV format shown to the user, does not affect functionality
+		return array(
+			'fields' => array(
+				'Application' => 'Application.Name',
+				'Area'        => 'Area.Name',
+				'PageName'    => 'Page.Name',
+				'PageUrl'     => 'Page.URL',
+				'ContentID'   => 'Content.ID',
+				'Content'     => 'Content.Content',
+			),
+			'relations' => array(),
+		);
+	}
 
 	/**
 	 * Create a new dataobject, or find one matching the specified key and name
@@ -105,5 +120,6 @@ class ExternalContentImport extends CsvBulkLoader {
 
     	return str_replace($search, $replace, $content);
 	}
+	
 
 }
