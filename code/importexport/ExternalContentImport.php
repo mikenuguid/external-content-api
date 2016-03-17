@@ -82,7 +82,8 @@ class ExternalContentImport extends CsvBulkLoader {
 	}
 
 	/**
-	 * Convert "smart" Microsoft Word characters to standard ASCI
+	 * Convert "smart" Microsoft Word characters to standard ASCII
+	 * see http://stackoverflow.com/questions/1262038/how-to-replace-microsoft-encoded-quotes-in-php
 	 * @param   $content string that contains Word generated characters
 	 * @return string
 	 */
