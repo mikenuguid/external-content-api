@@ -14,6 +14,13 @@ class ExternalContentApplication extends DataObject {
 		'Areas' => 'ExternalContentArea',
 	);
 
+	private static $indexes = array(
+		'IndexName' => array(
+			'type' => 'index', 
+			'value' => '"Name"'
+		)
+	);
+
 	public function requireDefaultRecords() {
 		parent::requireDefaultRecords();
 

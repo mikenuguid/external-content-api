@@ -19,6 +19,13 @@ class ExternalContent extends DataObject {
 	private static $many_many = array(
 		'Pages'	=> 'ExternalContentPage',
 	);
+
+	private static $indexes = array(
+		'ExternalIDIndex' => array(
+			'type' => 'index', 
+			'value' => '"ExternalID"'
+		)
+	);
 	
 	
 	/**
@@ -56,7 +63,7 @@ class ExternalContent extends DataObject {
 
 		$contentField = HtmlEditorField::create('Content', 'Content', $this->Content, 'external-content-api');
 		$fields->replaceField('Content', $contentField);
-		
+
 		return $fields;
 	}
 }

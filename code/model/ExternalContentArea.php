@@ -17,6 +17,13 @@ class ExternalContentArea extends DataObject {
 	private static $has_many = array(
 		'Pages' => 'ExternalContentPage',
 	);
+
+	private static $indexes = array(
+		'IndexName' => array(
+			'type' => 'index', 
+			'value' => '"Name"'
+		)
+	);
 	public function canView($member = null) {
 		return Permission::check('VIEW_EXTERNAL_CONTENT_API');;
 	}
