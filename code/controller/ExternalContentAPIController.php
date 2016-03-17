@@ -15,13 +15,28 @@ class ExternalContentAPIController extends Controller{
 	}
 	
 	public function ExternalContent(SS_HTTPRequest $request){
-		$data = ExternalContent::get();
-		// TODO: filtering
-
 		$format = $request->getVar('format');
 		$formatter = DataFormatter::for_extension($format);
 		if(!$formatter) $formatter = new XMLDataFormatter(); // default to XML
-		return $formatter->convertDataObjectSet($data);
+		return $formatter->convertDataObjectSet($this->getData($request));
+	}
+	
+	/**
+	 * @return DataList of ExternalContent
+	 */
+	protected function getData(SS_HTTPRequest $request){
+		$r = ExternalContent::get();
+		
+		$applicationName = $request->getVar('applicationName');
+		$areaName = $request->getVar('areaName');
+		$pageName = $request->getVar('pageName');
+		
+		if($applicationName) $r = $r->filter(array('Pages.Area.Application.Name:ExactMatch' => $applicationName));
+		if($areaName) $r = $r->filter(array('Pages.Area.Name:ExactMatch' => $areaName));
+		if($pageName) $r = $r->filter(array('Pages.Name:ExactMatch' => $pageName));
+		
+		return $r;
+		
 	}
 	
 }
