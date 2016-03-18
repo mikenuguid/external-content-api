@@ -1,18 +1,7 @@
 <?php
 class ExternalContentImport extends CsvBulkLoader {
-//Tolling,Account,account.resendpin,/account/resend-pin,IT-233,"<p>To have your PIN emailed to you, please enter your username, account holder number, or toll account ID below.</p>"
-//
-
-
 	public function processRecord($record, $columnMap, &$results, $preview = false) {
-//		debug::dump([$record, $columnMap, $results, $preview]); 
-            // [Application] => Tolling
-            // [Area] => Account
-            // [PageName] => account.resendpin
-            // [PageUrl] => /account/resend-pin
-            // [ContentID] => IT-233
-            // [Content] => 
-            // 		
+
 		$applicationName = isset($record['Application']) ? $record['Application'] : null;
 		$areaName = isset($record['Area']) ? $record['Area'] : null;
 		$pageName = isset($record['PageName']) ? $record['PageName'] : null;
@@ -70,6 +59,29 @@ class ExternalContentImport extends CsvBulkLoader {
 	}
 
 	/**
+	 * Override BulkLoader::load with custom deleteExistingRecords functionality
+	 * @param  $filepath same as @link BulkLoader::load
+	 * @return same as @link BulkLoader::load
+	 */
+	public function load($filepath) {
+		increase_time_limit_to(3600);
+		increase_memory_limit_to('512M');
+
+		// if replacing data, we need to individually delete objects from the bottom-up
+		// this means deleting in a particular order:
+		// 1. Content, 2. Page, 3. Area, 4.Application
+		if($this->deleteExistingRecords) {
+			ExternalContentType::get()->removeAll();
+			ExternalContent::get()->removeAll();
+			ExternalContentPage::get()->removeAll();
+			ExternalContentArea::get()->removeAll();
+			ExternalContentApplication::get()->removeAll();
+		}
+
+		return $this->processAll($filepath);
+	}
+
+	/**
 	 * Create a new dataobject, or find one matching the specified key and name
 	 * If the dataobject is new, it will set the $key to the given $name
 	 * This function will not write to the database, it will just return existing objects,
@@ -118,8 +130,8 @@ class ExternalContentImport extends CsvBulkLoader {
 			'-'
 		); 
 
-    	return str_replace($search, $replace, $content);
+		return str_replace($search, $replace, $content);
 	}
-	
+
 
 }

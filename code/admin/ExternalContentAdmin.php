@@ -4,10 +4,10 @@
 class ExternalContentAdmin extends ModelAdmin implements PermissionProvider {
 	
 	private static $managed_models = array(
+		'ExternalContent',
 		'ExternalContentApplication',
 		'ExternalContentArea',
 		'ExternalContentPage',
-		'ExternalContent',
 		'ExternalContentType',
 	);
 	
