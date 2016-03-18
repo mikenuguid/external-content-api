@@ -25,7 +25,13 @@ class ExternalContentAdmin extends ModelAdmin implements PermissionProvider {
 		$form = parent::getEditForm($id, $fields);
 		$gridFieldName = $this->sanitiseClassName($this->modelClass);
 		$gridField = $form->Fields()->fieldByName($gridFieldName);
-		$gridField->getConfig()->addComponent(new GridFieldFilterHeader()); 
+		$gridField->getConfig()
+			->addComponent(new GridFieldFilterHeader())
+			->removeComponentsByType('GridFieldPrintButton');
+		if($this->modelClass !== 'ExternalContent') {
+			$gridField->getConfig()->removeComponentsByType('GridFieldExportButton');
+		}
+
 		return $form;
 	}
 	
