@@ -3,52 +3,58 @@ class ExternalContentExportButton extends GridFieldExportButton {
 	
 	public function generateExportFileData($gridField) {
 		$separator = $this->csvSeparator;
-		$fileData = '';
 		$listOfContent = ExternalContent::get();
 
 		$row = array();
 
-		//headers
+		//header row
 		$headers = array(
 			'Application',
 			'Area',
 			'PageName',
 			'PageURL',
-			'ExternalID',
+			'ContentID',
 			'Content',
 			'Type',
 		);
-		$fileData .= "\"" . implode("\"{$separator}\"", array_values($headers)) . "\"";
-		$fileData .= "\n";
 
-		//data
+		//PHP doesn't let you output CSV directly to a variable; it expects a file handle
+		//Rather than use the filesystem, dump to the output buffer
+		//ob_get_clean will dump it to a string that can be returned
+		$csvOut = fopen('php://output', 'w');
+		ob_start();
+
+		//native function generates all the tricky formatting for us
+		fputcsv($csvOut, array_values($headers));
+
+		//data rows
 		foreach($listOfContent as $content) {
 
 			$contentPages = $content->Pages();
 			foreach($contentPages as $page) {
-				$row['Application'] = $this->wrapQuotes(
-					$page->Area() && $page->Area()->Application()
+				$row['Application'] = $page->Area() && $page->Area()->Application()
 						? $page->Area()->Application()->Name
-						: ''
-					);
-				$row['Area'] = $this->wrapQuotes($page->Area() ? $page->Area()->Name : '');
-				$row['PageName'] = $this->wrapQuotes($page->Name);
-				$row['PageURL'] = $this->wrapQuotes($page->URL);
-				$row['ExternalID'] = $this->wrapQuotes($content->ExternalID);
+						: '';
+
+				$row['Area'] = $page->Area() ? $page->Area()->Name : '';
+				$row['PageName'] = $page->Name;
+				$row['PageURL'] = $page->URL;
+				$row['ContentID'] = $content->ExternalID;
 
 				$bodyContent = str_replace(array("\r", "\n"), "\n", $content->Content);
-				$row['Body'] = $this->wrapQuotes($bodyContent);
+				$row['Body'] = $bodyContent;
 
-				$row['Type'] = $this->wrapQuotes($content->Type() ? $content->Type()->Name : '');
-				$fileData .= implode($separator, $row);
-				$fileData .= "\n";
+				$row['Type'] = $content->Type() ? $content->Type()->Name : '';
+
+				//dump CSV row to output buffer
+				fputcsv($csvOut, $row);
+
 			}
 		}
 
-		return $fileData;
-	}
-
-	private function wrapQuotes($value) {
-		return '"' . str_replace('"', '""', $value) . '"';
+		//close the handle and dump the output buffer to a string
+		fclose($csvOut);
+		$csv = ob_get_clean();
+		return $csv;
 	}
 }
