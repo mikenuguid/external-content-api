@@ -56,5 +56,5 @@ $externalContentEditor->removeButtons('spellchecker',
 	'outdent', 'indent', 'bullist', 'numlist', 
 	'blockquote', 'hr', 'charmap'
 );
-$externalContentEditor->addButtonsToLine(1, 'image', 'link', 'unlink', 'anchor', 'separator', 'tablecontrols');
+$externalContentEditor->addButtonsToLine(1, 'bullist', 'numlist', 'separator', 'image', 'link', 'unlink', 'anchor', 'tablecontrols');
 $externalContentEditor->setButtonsForLine(2, '');
