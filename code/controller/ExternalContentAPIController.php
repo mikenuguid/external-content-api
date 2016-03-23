@@ -12,12 +12,14 @@ class ExternalContentAPIController extends Controller{
 		$realm = $this->config()->get('realm');
 		$member = BasicAuth::requireLogin($realm);
 		if(!Permission::checkMember($member, "VIEW_EXTERNAL_CONTENT_API")) Security::permissionFailure();
+		$member->logIn();
 	}
 	
 	public function ExternalContent(SS_HTTPRequest $request){
 		$format = $request->getVar('format');
 		$formatter = DataFormatter::for_extension($format);
 		if(!$formatter) $formatter = new XMLDataFormatter(); // default to XML
+		$this->getResponse()->addHeader('Content-Type', $formatter->getOutputContentType());
 		return $formatter->convertDataObjectSet($this->getData($request));
 	}
 	
