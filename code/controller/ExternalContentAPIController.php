@@ -30,13 +30,20 @@ class ExternalContentAPIController extends Controller{
 		$applicationName = $request->getVar('applicationName');
 		$areaName = $request->getVar('areaName');
 		$pageName = $request->getVar('pageName');
-		
-		if($applicationName) $r = $r->filter(array('Pages.Area.Application.Name:ExactMatch' => $applicationName));
-		if($areaName) $r = $r->filter(array('Pages.Area.Name:ExactMatch' => $areaName));
-		if($pageName) $r = $r->filter(array('Pages.Name:ExactMatch' => $pageName));
-		
-		return $r;
-		
+
+		$filterOptions = array();
+		if($applicationName) {
+			$filterOptions['Pages.Area.Application.Name:ExactMatch'] = $applicationName;
+		}
+
+		if($areaName) {
+			$filterOptions['Pages.Area.Name:ExactMatch'] = $areaName;
+		}
+
+		if($pageName) {
+			$filterOptions['Pages.Name:ExactMatch'] = $pageName;
+		}
+
+		return $r->filter($filterOptions);
 	}
-	
 }
