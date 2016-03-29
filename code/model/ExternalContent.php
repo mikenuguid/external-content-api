@@ -44,6 +44,11 @@ class ExternalContent extends DataObject {
 	public function ContentSummary(){
 		return $this->obj('Content')->Summary(10);
 	}
+	
+	public function IsPlaintext(){
+		if(!$this->Type()) return false; // default to html
+		return $this->Type()->ContentIsPlaintext;
+	}
 
 	public function canView($member = null) {
 		return Permission::check('VIEW_EXTERNAL_CONTENT_API');;
@@ -61,9 +66,29 @@ class ExternalContent extends DataObject {
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
 
-		$contentField = HtmlEditorField::create('Content', 'Content', $this->Content, 'external-content-api');
+		$contentField = null;
+		if($this->IsPlaintext()){
+			$contentField = TextareaField::create('Content', 'Content', $this->Content);
+			$contentField->setDescription('This editor accepts plain text only due to the Content Type selected');
+		}else{
+			$contentField = HtmlEditorField::create('Content', 'Content', $this->Content, 'external-content-api');
+		}
 		$fields->replaceField('Content', $contentField);
-
+		
 		return $fields;
 	}
+	
+	protected function onBeforeWrite(){
+		parent::onBeforeWrite();
+		if($this->IsPlaintext()){
+			$this->Content = $this->cleanupPlaintext($this->Content);
+		}
+	}
+	
+	protected function cleanupPlaintext($raw){
+		$r = strip_tags($raw);
+		$r = trim(preg_replace('/\s+/', ' ', $r)); // remove newlines
+		return $r;
+	}
+	
 }
