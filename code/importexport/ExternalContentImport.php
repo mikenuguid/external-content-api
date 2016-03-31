@@ -2,23 +2,40 @@
 class ExternalContentImport extends CsvBulkLoader {
 	public function processRecord($record, $columnMap, &$results, $preview = false) {
 
+		//if we have reached this point, assume that the row has been parsed already
+
+		//application name
 		$applicationName = isset($record['Application']) ? $record['Application'] : null;
+
+		//area name
 		$areaName = isset($record['Area']) ? $record['Area'] : null;
+
+		//page name and URL
 		$pageName = isset($record['PageName']) ? $record['PageName'] : null;
 		$pageUrl = isset($record['PageUrl']) ? $record['PageUrl'] : null;
+
+		//content ID and content
 		$contentExternalID = isset($record['ContentID']) ? $record['ContentID'] : null;
 		$contentContent = isset($record['Content']) ? $record['Content'] : null;
 
+		//what type of content?
+		$contentType = isset($record['Type']) ? $record['Type'] : null;
+
+
+		//find or make an existing application. If it's new, set the name and write it
 		$application = $this->findOrMake('ExternalContentApplication', $applicationName);
 		if($application && !$application->ID) {
 			$application->write();
 		}
+
+		//find or make an existing area. If it's new, set the name and application ID, then write it
 		$area = $this->findOrMake('ExternalContentArea', $areaName);
 		if($area && !$area->ID) {
 			$area->ApplicationID = $application->ID;
 			$area->write();
 		}
 
+		//find or make existing page. If it's new, set the name, URL, and area ID, then write it
 		$contentPage = $this->findOrMake('ExternalContentPage', $pageName);
 		if($contentPage && !$contentPage->ID) {
 			$contentPage->URL = Convert::raw2sql($pageUrl);
@@ -26,17 +43,29 @@ class ExternalContentImport extends CsvBulkLoader {
 			$contentPage->write();
 		}
 
-		$c = $this->findOrMake('ExternalContent', $contentExternalID, 'ExternalID');
+		//find or make existing content type. If it's new, determine if it's plaintext or not, then write
+		$type = $this->findOrMake('ExternalContentType', $contentType);
+		if($type && !$type->ID) {
+			$type->ContentIsPlaintext = true;
+			if(preg_match('/rich text$/', strtolower($contentType))) {
+				$type->ContentIsPlaintext = false;
+			}
+			$type->write();
+		}
 
+		//find or make existing content by ContentID. If it's new, set the content and type, then write
+		$c = $this->findOrMake('ExternalContent', $contentExternalID, 'ExternalID');
 		if($c) {
 			if($c->ID) {
 				$results->addUpdated($c, 'content record skipped');
 			} else {
 				$c->Content = $this->deWordify($contentContent);
+				$c->TypeID = $type->ID;
 				$c->write();
 				$results->addCreated($c, 'content record created');
 			}
 
+			//add the page created above as a relation to this content
 			$c->Pages()->add($contentPage);
 		}
 
@@ -53,6 +82,7 @@ class ExternalContentImport extends CsvBulkLoader {
 				'PageUrl'     => 'Page.URL',
 				'ContentID'   => 'Content.ID',
 				'Content'     => 'Content.Content',
+				'Type'        => 'Type.Name',
 			),
 			'relations' => array(),
 		);
