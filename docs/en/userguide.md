@@ -16,12 +16,11 @@ You will be prompted to enter your CMS username and password.
 The response format is XML by default but can be changed to JSON by specifying the ?format=json parameter.
 
 There are three filter parameters available:
-applicationName
-areaName
-pageName
+- applicationName
+- areaName
+- pageName
 Each can be used to filter down to a subset of the data, for example ?pageName=tolling.content
 
 ## Groups ##
-Access to the API should be set up with an API user. This user should be in the External content API readers group, and have a long randomly generated password.
-
-Staff who are allowed to edit the data in the CMS must be in the External content API readers > External content API editors group.
+- Access to the API should be set up with an API user. This user should be in the External content API readers group, and have a long randomly generated password.
+- Staff who are allowed to edit the data in the CMS must be in the External content API readers > External content API editors group.
