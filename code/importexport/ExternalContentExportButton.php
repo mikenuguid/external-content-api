@@ -12,7 +12,7 @@ class ExternalContentExportButton extends GridFieldExportButton {
 			'Application',
 			'Area',
 			'PageName',
-			'PageURL',
+			'PageUrl',
 			'ContentID',
 			'Content',
 			'Type',
@@ -38,7 +38,7 @@ class ExternalContentExportButton extends GridFieldExportButton {
 
 				$row['Area'] = $page->Area() ? $page->Area()->Name : '';
 				$row['PageName'] = $page->Name;
-				$row['PageURL'] = $page->URL;
+				$row['PageUrl'] = $page->URL;
 				$row['ContentID'] = $content->ExternalID;
 
 				$bodyContent = str_replace(array("\r", "\n"), "\n", $content->Content);
