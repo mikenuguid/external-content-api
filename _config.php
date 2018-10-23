@@ -8,20 +8,18 @@ $externalContentEditor = HtmlEditorConfig::get('external-content-api');
 
 // Start with the same configuration as 'cms' config (defined in framework/admin/_config.php).
 $externalContentEditor->setOptions([
-    'friendly_name' => 'External content API',
-    'priority'      => '60',
-    'mode'          => 'none',
-
-    'body_class'        => 'typography',
-    'document_base_url' => Director::absoluteBaseURL(),
-
-    'cleanup_callback' => "sapphiremce_cleanup",
-
+    'friendly_name'               => 'External content API',
+    'priority'                    => '60',
+    'skin'                        => 'silverstripe',
+    'mode'                        => 'none',
+    'body_class'                  => 'typography',
+    'document_base_url'           => Director::absoluteBaseURL(),
+    'cleanup_callback'            => "sapphiremce_cleanup",
     'use_native_selects'          => false,
-    'valid_elements'              => "@[id|class|style|title],a[id|rel|rev|dir|tabindex|accesskey|type|name|href|target|title"
-        . "|class],-strong/-b[class],-em/-i[class],-strike[class],-u[class],#p[id|dir|class|align|style],-ol[class],"
-        . "-ul[class],-li[class],br,img[id|dir|longdesc|usemap|class|src|border|alt=|title|width|height|align|data*],"
-        . "-sub[class],-sup[class],-blockquote[dir|class],"
+    'valid_elements'              => "@[id|class|style|title],a[id|rel|rev|dir|tabindex|accesskey|type|name|href"
+        . "|target|title|class],-strong/-b[class],-em/-i[class],-strike[class],-u[class],#p[id|dir|class|align|style],"
+        . "-ol[class],-ul[class],-li[class],br,img[id|dir|longdesc|usemap|class|src|border|alt=|title|width|height"
+        . "|align|data*],-sub[class],-sup[class],-blockquote[dir|class],"
         . "-table[cellspacing|cellpadding|width|height|class|align|dir|id|style],"
         . "-tr[id|dir|class|rowspan|width|height|align|valign|bgcolor|background|bordercolor|style],"
         . "tbody[id|class|style],thead[id|class|style],tfoot[id|class|style],"
@@ -34,8 +32,8 @@ $externalContentEditor->setOptions([
     'extended_valid_elements'     =>
         'img[class|src|alt|title|hspace|vspace|width|height|align|name|usemap|data*],'
         . 'object[classid|codebase|width|height|data|type],'
-        . 'embed[width|height|name|flashvars|src|bgcolor|align|play|loop|quality|allowscriptaccess|type|pluginspage|autoplay],'
-        . 'param[name|value],'
+        . 'embed[width|height|name|flashvars|src|bgcolor|align|play|loop|quality|allowscriptaccess|type|pluginspage'
+        . '|autoplay],param[name|value],'
         . 'map[class|name|id],'
         . 'area[shape|coords|href|target|alt],'
         . 'ins[cite|datetime],del[cite|datetime],'

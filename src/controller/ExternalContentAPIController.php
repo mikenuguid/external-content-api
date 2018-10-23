@@ -30,7 +30,7 @@ class ExternalContentAPIController extends Controller
     {
         parent::init();
         $realm = $this->config()->get('realm');
-        $member = BasicAuth::requireLogin($this->request(), $realm);
+        $member = BasicAuth::requireLogin($this->getRequest(), $realm);
         if (!Permission::checkMember($member, "VIEW_EXTERNAL_CONTENT_API")) {
             Security::permissionFailure();
         }

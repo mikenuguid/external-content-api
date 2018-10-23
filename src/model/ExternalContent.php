@@ -3,6 +3,7 @@
 namespace NZTA\ContentApi\Model;
 
 use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\HTMLEditor\HTMLEditorConfig;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\ORM\DataObject;
@@ -126,13 +127,12 @@ class ExternalContent extends DataObject
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
-
         $contentField = null;
         if ($this->IsPlaintext()) {
             $contentField = TextareaField::create('Content', 'Content', $this->Content);
             $contentField->setDescription('This editor accepts plain text only due to the Content Type selected');
         } else {
-            $contentField = HtmlEditorField::create('Content', 'Content', $this->Content, 'external-content-api');
+            $contentField = HtmlEditorField::create('Content', 'Content')->setEditorConfig('external-content-api');
         }
         $fields->replaceField('Content', $contentField);
 
