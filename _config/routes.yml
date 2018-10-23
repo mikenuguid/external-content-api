@@ -2,6 +2,6 @@
 Name: externalcontentroutes
 After: '*'
 ---
-Director:
+SilverStripe\Control\Director:
   rules:
     'api/v1/externalcontent': 'ExternalContentAPIController'
