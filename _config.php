@@ -55,3 +55,4 @@ $externalContentEditor->removeButtons('spellchecker',
 );
 $externalContentEditor->addButtonsToLine(1, 'bullist', 'numlist', 'separator', 'image', 'link', 'unlink', 'anchor', 'tablecontrols');
 $externalContentEditor->insertButtonsAfter('strikethrough', 'forecolor','backcolor');
+$externalContentEditor->setButtonsForLine(2, '');
