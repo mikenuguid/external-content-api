@@ -47,14 +47,11 @@ $externalContentEditor->setOptions(array(
 
 // First line:
 $externalContentEditor->removeButtons('spellchecker',
-	'formatselect',
-	'styleselect',
-	'visualaid',
 	'pasteword',
 	'selectall','cut','copy','paste','pastetext',
 	'undo', 'redo',
-	'outdent', 'indent', 'bullist', 'numlist', 
+	'outdent', 'indent', 'bullist', 'numlist',
 	'blockquote', 'hr', 'charmap'
 );
 $externalContentEditor->addButtonsToLine(1, 'bullist', 'numlist', 'separator', 'image', 'link', 'unlink', 'anchor', 'tablecontrols');
-$externalContentEditor->setButtonsForLine(2, '');
+$externalContentEditor->insertButtonsAfter('strikethrough', 'forecolor','backcolor');
