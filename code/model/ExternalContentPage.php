@@ -9,10 +9,11 @@ class ExternalContentPage extends DataObject {
 	private static $db = array(
 		'Name' => 'Varchar',
 		'URL' => 'Varchar',
+		'AppName' => 'Varchar'
 	);
 	
 	private static $has_one = array(
-		'Area' => 'ExternalContentArea',
+		'Area' => 'ExternalContentArea'
 	);
 	
 	private static $belongs_many_many = array(
@@ -25,6 +26,17 @@ class ExternalContentPage extends DataObject {
 			'value' => '"Name"'
 		)
 	);
+
+	public function onBeforeWrite() {
+		parent::onBeforeWrite();
+		//update AppName field, check if ApplicationID = 0
+		if(!$this->Area()->ApplicationID){
+			$this->AppName = 'N/A';
+		}else{
+			$this->AppName = $this->Area()->Application()->Name;
+		}
+	}
+
 	public function canView($member = null) {
 		return Permission::check('VIEW_EXTERNAL_CONTENT_API');;
 	}

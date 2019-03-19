@@ -26,6 +26,12 @@ class ExternalContent extends DataObject {
 			'value' => '"ExternalID"'
 		)
 	);
+
+	private static $searchable_fields = array(
+		'ExternalID',
+		'Type.Name' => array('title' => 'Content Type'),
+		'Pages.AppName' => array('title' => 'Application')
+	);
 	
 	
 	/**
@@ -35,9 +41,9 @@ class ExternalContent extends DataObject {
 	private static $summary_fields = array(
 		'ExternalID' => 'External ID',
 		'ContentSummary' => 'Content',
-		'Type.Name' => 'Content type',
+		'Type.Name' => 'Content type'
 	);
-		
+
 	/**
 	 * Strip HTML from content summary
 	 */
