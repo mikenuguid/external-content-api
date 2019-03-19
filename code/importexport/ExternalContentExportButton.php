@@ -2,8 +2,17 @@
 class ExternalContentExportButton extends GridFieldExportButton {
 	
 	public function generateExportFileData($gridField) {
-		$separator = $this->csvSeparator;
-		$listOfContent = ExternalContent::get();
+
+		//Remove GridFieldPaginator as we're going to export the entire list.
+		$gridField->getConfig()->removeComponentsByType('GridFieldPaginator');
+
+		$listOfContent = $gridField->getManipulatedList();
+
+		foreach($gridField->getConfig()->getComponents() as $component){
+			if($component instanceof GridFieldFilterHeader || $component instanceof GridFieldSortableHeader) {
+				$listOfContent = $component->getManipulatedData($gridField, $listOfContent);
+			}
+		}
 
 		$row = array();
 
