@@ -51,6 +51,25 @@ class ExternalContentApplication extends DataObject {
 
 	}
 
+	/**
+	 * Update ExternalContentPage AppName
+	 */
+	public function onAfterWrite()
+	{
+		parent::onAfterWrite();
+		$appName = $this->Name;
+		$areas = $this->Areas();
+		foreach ($areas as $area) {
+			$pages = $area->Pages();
+			foreach ($pages as $page) {
+				if($page->AppName != $appName){
+					$page->AppName = $appName;
+					$page->write();
+				}
+			}
+		}
+	}
+
 	private function findOrMakeExternalContentGroup(array $attributes) {
 		$group = Group::get()->find('Title', $attributes['Title']);
 		if(!($group && $group->ID)) {
