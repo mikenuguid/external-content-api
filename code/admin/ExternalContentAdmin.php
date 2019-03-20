@@ -18,10 +18,10 @@ class ExternalContentAdmin extends ModelAdmin implements PermissionProvider {
 	private static $model_importers = array(
 		'ExternalContent' => 'ExternalContentImport',
 	);
-	
+
 	public function getEditForm($id = null, $fields = null){
 		// add ability to search
-		
+
 		$form = parent::getEditForm($id, $fields);
 		$gridFieldName = $this->sanitiseClassName($this->modelClass);
 		$gridField = $form->Fields()->fieldByName($gridFieldName);
@@ -32,9 +32,10 @@ class ExternalContentAdmin extends ModelAdmin implements PermissionProvider {
 		if($this->modelClass === 'ExternalContent') {
 			$exportButton = new ExternalContentExportButton('buttons-before-left');
 			$gridField->getConfig()
-				->addComponent($exportButton);
+				->addComponent($exportButton)
+				->removeComponentsByType('GridFieldDetailForm')
+				->addComponent(new Heyday\VersionedDataObjects\VersionedDataObjectDetailsForm());
 		}
-
 		return $form;
 	}
 	
