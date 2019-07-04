@@ -27,6 +27,15 @@ class ExternalContentPage extends DataObject {
 		)
 	);
 
+	public function getCMSFields()
+	{
+		$fields = parent::getCMSFields();
+		$fields->dataFieldByName('AppName')
+			->setReadonly(true)
+			->setTitle('Application Name');
+		return $fields;
+	}
+
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
 		//update AppName field, check if ApplicationID = 0
