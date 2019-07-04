@@ -88,12 +88,15 @@ class ExternalContentImport extends CsvBulkLoader
 		//find or make existing content by ContentID. If it's new, set the content and type, then write
 		$c = $this->findOrMake('ExternalContent', $contentExternalID, 'ExternalID');
 		if ($c) {
-			if ($c->ID) {
-				$results->addUpdated($c, 'content record skipped');
-			} else {
+			if (!$c->ID) {
 				$c->Content = $this->deWordify($contentContent);
 				$c->TypeID = $type->ID;
 				$c->write();
+
+				if (Director::isLive() && !$c->IsPublished()) {
+					$c->doPublish();
+				}
+				// we only want to add notification if there's a new content created
 				$results->addCreated($c, 'content record created');
 			}
 
