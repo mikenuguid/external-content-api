@@ -93,7 +93,7 @@ class ExternalContentImport extends CsvBulkLoader
 				$c->TypeID = $type->ID;
 				$c->write();
 
-				if (Director::isLive() && !$c->IsPublished()) {
+				if ((Director::isLive() || Director::isTest()) && !$c->IsPublished()) {
 					$c->doPublish();
 				}
 				// we only want to add notification if there's a new content created
